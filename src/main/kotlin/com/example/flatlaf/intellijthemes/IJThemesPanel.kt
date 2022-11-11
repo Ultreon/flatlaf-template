@@ -240,10 +240,12 @@ class IJThemesPanel : JPanel() {
         if (themeInfo == null) return
 
         // change look and feel
-        if (themeInfo.isSystemTheme) {
+        if (themeInfo.isSystemTheme) { // CHANGE: (Ultreon) Allow system theme
+            FlatAnimatedLafChange.stop() // Ultreon: Fix bug
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
         } else if (themeInfo.lafClassName != null) {
             if (themeInfo.lafClassName == UIManager.getLookAndFeel().javaClass.name) return
+            FlatAnimatedLafChange.stop()
             FlatAnimatedLafChange.showSnapshot()
             try {
                 UIManager.setLookAndFeel(themeInfo.lafClassName)
@@ -252,6 +254,7 @@ class IJThemesPanel : JPanel() {
                 showInformationDialog("Failed to create '" + themeInfo.lafClassName + "'.", ex)
             }
         } else if (themeInfo.themeFile != null) {
+            FlatAnimatedLafChange.stop() // Ultreon: Fix bug
             FlatAnimatedLafChange.showSnapshot()
             try {
                 if (themeInfo.themeFile.name.endsWith(".properties")) {
@@ -263,6 +266,7 @@ class IJThemesPanel : JPanel() {
                 showInformationDialog("Failed to load '" + themeInfo.themeFile + "'.", ex)
             }
         } else {
+            FlatAnimatedLafChange.stop() // Ultreon: Fix bug
             FlatAnimatedLafChange.showSnapshot()
             IntelliJTheme.setup(javaClass.getResourceAsStream(THEMES_PACKAGE + themeInfo.resourceName))
             AppPrefs.state.put(AppPrefs.KEY_LAF_THEME, AppPrefs.RESOURCE_PREFIX + themeInfo.resourceName)
