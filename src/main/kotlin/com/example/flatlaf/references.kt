@@ -1,24 +1,26 @@
 package com.example.flatlaf
 
+import com.example.flatlaf.main.ProductJson
 import com.google.gson.Gson
 import java.net.URL
 
-private val gson = Gson()
+val gson = Gson()
+
 private val productJson = gson.fromJson(ProductJson::class.java.getResourceAsStream("/product.json")!!.bufferedReader(), ProductJson::class.java)
 
 // Resources
-const val APP_ICON: String = "/icons/icon.png"
-const val APP_BANNER: String = "/images/banner.png"
+const val appIcon: String = "/icons/icon.png"
+const val appBanner: String = "/images/banner.png"
 
 // Resource references
-val APP_ICON_REF: URL = ProductJson::class.java.getResource(APP_ICON)!!
-val APP_BANNER_REF: URL = ProductJson::class.java.getResource(APP_BANNER)!!
+val appIconRef: URL = ProductJson::class.java.getResource(appIcon)!!
+val appBannerRef: URL = ProductJson::class.java.getResource(appBanner)!!
 
 // Product properties.
-val APP_ID: String = productJson.id
-val APP_NAME: String = productJson.name
-val APP_VERSION: String = productJson.version
-val BUILD_DATE: String = productJson.buildDate
-const val SOURCE_URL: String = "https://github.com/Ultreon/flatlaf-template"
-const val ISSUES_URL: String = "https://github.com/Ultreon/flatlaf-template/issues"
-const val NEW_ISSUE_URL: String = "https://github.com/Ultreon/flatlaf-template/issues/new/choose"
+val appId: String = productJson.id
+val appName: String = productJson.name
+val appVersion: String = productJson.version
+val buildDate: String = productJson.buildDate
+const val sourceUrl: String = "https://github.com/Ultreon/flatlaf-template"
+const val issuesUrl: String = "https://github.com/Ultreon/flatlaf-template/issues"
+const val newIssueUrl: String = "https://github.com/Ultreon/flatlaf-template/issues/new/choose"

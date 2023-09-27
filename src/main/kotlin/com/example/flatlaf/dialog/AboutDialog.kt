@@ -31,7 +31,7 @@ class AboutDialog(owner: Frame?, title: String?, modal: Boolean) : StandardDialo
     override fun actionPerformed(event: ActionEvent) {
         when (event.actionCommand) {
             "sourceButton" -> {
-                Desktop.getDesktop().browse(URI(SOURCE_URL))
+                Desktop.getDesktop().browse(URI(sourceUrl))
             }
 
             else -> super.actionPerformed(event)

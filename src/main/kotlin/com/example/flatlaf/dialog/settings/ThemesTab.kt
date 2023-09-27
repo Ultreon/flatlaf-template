@@ -1,8 +1,8 @@
 @file:Suppress("unused")
 
-package com.example.flatlaf.dialog.settings
+ package com.example.flatlaf.dialog.settings
 
-import com.example.flatlaf.MainFrame
+import com.example.flatlaf.main.MainFrame
 import com.example.flatlaf.intellijthemes.IJThemesPanel
 import java.awt.Component
 import java.awt.Container
@@ -12,7 +12,7 @@ import javax.swing.Spring
 import javax.swing.SpringLayout
 
 
-class SettingsPanel : JPanel {
+class ThemesTab : JPanel {
     private var themeComboBox: IJThemesPanel
 
     constructor(layout: LayoutManager?, isDoubleBuffered: Boolean) : super(layout, isDoubleBuffered)
@@ -25,11 +25,7 @@ class SettingsPanel : JPanel {
 
         layout = SpringLayout()
 
-//        val label = JLabel("Theme:")
         themeComboBox = MainFrame.themesPanel
-//        label.labelFor = themeComboBox
-
-//        add(label)
         add(themeComboBox)
 
         //Lay out the panel.

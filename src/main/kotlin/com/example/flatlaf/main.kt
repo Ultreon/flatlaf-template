@@ -1,7 +1,8 @@
-package me.qboi.texteditor.com.example.flatlaf
+package com.example.flatlaf
 
-import com.example.flatlaf.AppPrefs
-import com.example.flatlaf.MainFrame
+import com.example.flatlaf.lang.LanguageManager
+import com.example.flatlaf.main.AppPrefs
+import com.example.flatlaf.main.MainFrame
 import com.formdev.flatlaf.FlatLightLaf
 import org.oxbow.swingbits.dialog.task.TaskDialogs
 import javax.swing.SwingUtilities
@@ -12,12 +13,22 @@ fun main() {
     AppPrefs.init("me.qboi.texteditor")
     AppPrefs.setupLaf(arrayOf())
 
-    SwingUtilities.invokeLater {
-        Thread.setDefaultUncaughtExceptionHandler { _, ex ->
-            crash(ex)
-        }
-        MainFrame.start()
+    Thread.setDefaultUncaughtExceptionHandler { _, ex ->
+        crash(ex)
     }
+
+    LanguageManager.registerDefaults()
+    LanguageManager.freeze()
+
+    do {
+        MainFrame.isRunning = true
+        SwingUtilities.invokeAndWait {
+            MainFrame.start()
+        }
+        while (MainFrame.isRunning) {
+            Thread.sleep(50)
+        }
+    } while (isRestart)
 }
 
 @Throws(Exception::class)

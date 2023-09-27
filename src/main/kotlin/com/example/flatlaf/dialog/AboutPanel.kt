@@ -15,10 +15,10 @@ class AboutPanel : JPanel() {
 
         createHTMLView = BasicHTML.createHTMLView(this, javaClass.getResourceAsStream("/docs/about.html")?.let {
             val readText = it.bufferedReader().readText()
-                .replace("@(project-name)", APP_NAME)
-                .replace("@(version)", APP_VERSION)
-                .replace("@(build-date)", BUILD_DATE)
-                .replace("@(image)", APP_BANNER_REF.toString())
+                .replace("@(project-name)", appName)
+                .replace("@(version)", appVersion)
+                .replace("@(build-date)", buildDate)
+                .replace("@(image)", appBannerRef.toString())
             it.close()
             return@let readText
         } ?: """

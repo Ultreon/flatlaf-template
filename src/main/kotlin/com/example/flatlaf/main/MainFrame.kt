@@ -1,7 +1,6 @@
-@file:Suppress("LeakingThis")
+package com.example.flatlaf.main
 
-package com.example.flatlaf
-
+import com.example.flatlaf.*
 import com.example.flatlaf.dialog.AboutDialog
 import com.example.flatlaf.dialog.settings.SettingsDialog
 import com.example.flatlaf.intellijthemes.IJThemesPanel
@@ -14,16 +13,16 @@ import java.io.File
 import java.net.URI
 import javax.imageio.ImageIO
 import javax.swing.*
-import kotlin.system.exitProcess
 
 /*
  * InternalFrameDemo.java requires:
  *   MyInternalFrame.java
  */
-open class MainFrame : JFrame("$APP_NAME - $APP_VERSION") {
+class MainFrame : JFrame("$appName - $appVersion") {
     init {
         // Set instance
         instance = this
+        isRunning = true
 
         themesPanel = IJThemesPanel()
 
@@ -34,7 +33,7 @@ open class MainFrame : JFrame("$APP_NAME - $APP_VERSION") {
         val position = screen.defaultConfiguration.bounds.location
         this.setSize(1024, 640)
 
-        this.iconImage = ImageIO.read(APP_ICON_REF)
+        this.iconImage = ImageIO.read(appIconRef)
 
         // Set the frame in the middle of the default screen.
         this.setLocation(
@@ -57,7 +56,7 @@ open class MainFrame : JFrame("$APP_NAME - $APP_VERSION") {
         jMenuBar = createMenuBar()
     }
 
-    protected fun createMenuBar(): JMenuBar {
+    private fun createMenuBar(): JMenuBar {
         val menuBar = JMenuBar()
 
         //Set up the lone menu.
@@ -118,15 +117,15 @@ open class MainFrame : JFrame("$APP_NAME - $APP_VERSION") {
      * Opens the issues tracker page in the default browser.
      */
     private fun openIssueTracker() {
-        Desktop.getDesktop().browse(URI(ISSUES_URL))
+        Desktop.getDesktop().browse(URI(issuesUrl))
     }
 
     private fun openNewIssuePage() {
-        Desktop.getDesktop().browse(URI(NEW_ISSUE_URL))
+        Desktop.getDesktop().browse(URI(newIssueUrl))
     }
 
     private fun showAbout() {
-        AboutDialog(this, "About $APP_NAME", true).apply {
+        AboutDialog(this, "About $appName", true).apply {
             setLocationRelativeTo(this@MainFrame)
             isVisible = true
         }
@@ -139,7 +138,7 @@ open class MainFrame : JFrame("$APP_NAME - $APP_VERSION") {
         }
     }
 
-    protected fun openFile() {
+    private fun openFile() {
         val fileChooser = JFileChooser()
         fileChooser.showOpenDialog(this)
         val selectedFile = fileChooser.selectedFile
@@ -153,11 +152,24 @@ open class MainFrame : JFrame("$APP_NAME - $APP_VERSION") {
     }
 
     //Quit the application.
-    protected fun quit() {
-        exitProcess(0)
+    private fun quit() {
+        dispose()
+    }
+
+    //Quit the application.
+    fun restart() {
+        isRestart = true
+        quit()
+    }
+
+    override fun dispose() {
+        super.dispose()
+        isRunning = false
     }
 
     companion object {
+        var isRunning: Boolean = true
+            internal set
         lateinit var instance: MainFrame
             private set
 

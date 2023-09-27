@@ -21,14 +21,16 @@
 
 package com.example.flatlaf.intellijthemes
 
-import com.example.flatlaf.Settings
 import com.formdev.flatlaf.*
 import com.formdev.flatlaf.IntelliJTheme.ThemeLaf
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange
 import com.formdev.flatlaf.extras.FlatSVGIcon
+import com.formdev.flatlaf.themes.FlatMacDarkLaf
+import com.formdev.flatlaf.themes.FlatMacLightLaf
 import com.formdev.flatlaf.util.LoggingFacade
 import com.formdev.flatlaf.util.StringUtils
-import com.example.flatlaf.AppPrefs
+import com.example.flatlaf.main.AppPrefs
+import com.example.flatlaf.main.Settings
 import net.miginfocom.swing.MigLayout
 import java.awt.Component
 import java.awt.Desktop
@@ -159,6 +161,34 @@ class IJThemesPanel : JPanel() {
             )
         )
 
+        if (showLight) themes.add(
+            IJThemeInfo(
+                "FlatLaf macOS Light",
+                null,
+                true,
+                null,
+                null,
+                null,
+                null,
+                null,
+                FlatMacLightLaf::class.java.name
+            )
+        )
+
+        if (showDark) themes.add(
+            IJThemeInfo(
+                "FlatLaf macOS Dark",
+                null,
+                true,
+                null,
+                null,
+                null,
+                null,
+                null,
+                FlatMacDarkLaf::class.java.name
+            )
+        )
+
         // add themes from directory
         categories[themes.size] = "Current Directory"
         themes.addAll(themesManager.moreThemes)
@@ -241,7 +271,7 @@ class IJThemesPanel : JPanel() {
 
         // change look and feel
         if (themeInfo.isSystemTheme) { // CHANGE: (Ultreon) Allow system theme
-            FlatAnimatedLafChange.stop() // Ultreon: Fix bug
+            FlatAnimatedLafChange.stop()
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName())
         } else if (themeInfo.lafClassName != null) {
             if (themeInfo.lafClassName == UIManager.getLookAndFeel().javaClass.name) return
@@ -254,7 +284,6 @@ class IJThemesPanel : JPanel() {
                 showInformationDialog("Failed to create '" + themeInfo.lafClassName + "'.", ex)
             }
         } else if (themeInfo.themeFile != null) {
-            FlatAnimatedLafChange.stop() // Ultreon: Fix bug
             FlatAnimatedLafChange.showSnapshot()
             try {
                 if (themeInfo.themeFile.name.endsWith(".properties")) {
@@ -266,7 +295,6 @@ class IJThemesPanel : JPanel() {
                 showInformationDialog("Failed to load '" + themeInfo.themeFile + "'.", ex)
             }
         } else {
-            FlatAnimatedLafChange.stop() // Ultreon: Fix bug
             FlatAnimatedLafChange.showSnapshot()
             IntelliJTheme.setup(javaClass.getResourceAsStream(THEMES_PACKAGE + themeInfo.resourceName))
             AppPrefs.state.put(AppPrefs.KEY_LAF_THEME, AppPrefs.RESOURCE_PREFIX + themeInfo.resourceName)
@@ -466,6 +494,14 @@ class IJThemesPanel : JPanel() {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
+    /**
+     *
+     */
+    // Added set theme with name for user preference.
+    fun setTheme() {
+
+    }
+
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private var toolBar: JToolBar? = null
     private var saveButton: JButton? = null
@@ -479,8 +515,8 @@ class IJThemesPanel : JPanel() {
         initComponents()
         saveButton!!.isEnabled = false
         sourceCodeButton!!.isEnabled = false
-        saveButton!!.icon = FlatSVGIcon("/icons/download.svg")
-        sourceCodeButton!!.icon = FlatSVGIcon("/icons/github.svg")
+        saveButton!!.icon = FlatSVGIcon("me/qboi/texteditor/icons/download.svg")
+        sourceCodeButton!!.icon = FlatSVGIcon("me/qboi/texteditor/icons/github.svg")
 
         // create renderer
         themesList!!.cellRenderer = object : DefaultListCellRenderer() {

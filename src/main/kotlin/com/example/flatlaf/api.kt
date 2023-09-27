@@ -11,3 +11,10 @@ fun action(name: String, function: () -> Unit): Action {
         }
     }
 }
+
+var isRestart = false
+    get() {
+        val value = field
+        field = false
+        return value
+    }

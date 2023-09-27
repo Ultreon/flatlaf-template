@@ -1,4 +1,4 @@
-package com.example.flatlaf
+package com.example.flatlaf.main
 
 import java.awt.Font
 

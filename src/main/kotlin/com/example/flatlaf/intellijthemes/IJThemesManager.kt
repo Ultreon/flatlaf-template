@@ -19,9 +19,9 @@
  */
 package com.example.flatlaf.intellijthemes
 
-import com.formdev.flatlaf.json.Json
 import com.formdev.flatlaf.util.LoggingFacade
 import com.formdev.flatlaf.util.StringUtils
+import com.example.flatlaf.gson
 import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
@@ -38,14 +38,14 @@ internal class IJThemesManager {
         bundledThemes.clear()
 
         // load themes.json
-        var json: Map<String?, Any>
+        var json: Map<String, Any>
         try {
             InputStreamReader(
-                javaClass.getResourceAsStream("/themes.json")!!,
+                javaClass.getResourceAsStream("themes.json")!!,
                 StandardCharsets.UTF_8
             ).use { reader ->
                 @Suppress("UNCHECKED_CAST")
-                json = Json.parse(reader) as Map<String?, Any>
+                json = gson.fromJson(reader, Map::class.java) as Map<String, Any>
             }
         } catch (ex: IOException) {
             LoggingFacade.INSTANCE.logSevere(null, ex)
@@ -54,16 +54,22 @@ internal class IJThemesManager {
 
         // add info about bundled themes
         for ((resourceName, value1) in json) {
-            @Suppress("UNCHECKED_CAST") val value = value1 as Map<String, String>
-            val name = value["name"]
-            val dark = java.lang.Boolean.parseBoolean(value["dark"])
-            val license = value["license"]
-            val licenseFile = value["licenseFile"]
-            val sourceCodeUrl = value["sourceCodeUrl"]
-            val sourceCodePath = value["sourceCodePath"]
+            @Suppress("UNCHECKED_CAST") val value = value1 as Map<String, Any>
+            val name = (value["name"] as String?)!!
+            val dark: Boolean = value["dark"].let {
+                when (it) {
+                    is String? -> it?.toBooleanStrictOrNull() ?: false
+                    is Boolean? -> it ?: false
+                    else -> false
+                }
+            }
+            val license = value["license"] as String?
+            val licenseFile = value["licenseFile"] as String?
+            val sourceCodeUrl = value["sourceCodeUrl"] as String?
+            val sourceCodePath = value["sourceCodePath"] as String?
             bundledThemes.add(
                 IJThemeInfo(
-                    name!!,
+                    name,
                     resourceName,
                     dark,
                     license,
